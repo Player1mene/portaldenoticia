@@ -40,10 +40,54 @@ app.get('/',(req,res)=>{
                     slug: val.slug            
                 }
             })
-            res.render('home',{posts:posts});
+            News.find({}).sort({'views': -1}).limit(3).exec(function(err,postsTop){
+
+                // console.log(posts[0]);
+
+                 postsTop = postsTop.map(function(val){
+
+                         return {
+
+                             titulo: val.titulo,
+
+                             conteudo: val.conteudo,
+
+                             descricaoCurta: val.conteudo.substr(0,100),
+
+                             imagem: val.imagem,
+
+                             slug: val.slug,
+
+                             categoria: val.categoria,
+
+                             views: val.views
+
+                             
+
+                         }
+
+                 })
+
+
+
+                 
+
+
+
+                 res.render('home',{posts:posts,postsTop:postsTop});
+
+                
+
+             })
         })
     }else{
-        res.render('busca',{});
+
+        News.find({titulo: {$regex: req.query.busca,$options:"i"}},function(err,posts){
+            console.log(posts)
+            res.render('busca',{});
+        
+        })
+
     }
 
   
@@ -52,7 +96,52 @@ app.get('/',(req,res)=>{
 
 app.get('/:slug',(req,res)=>{
     News.findOneAndUpdate({slug: req.params.slug}, {$inc : {views: 1}}, {new: true},function(error,resposta){
-        res.render('single',{noticias:resposta});
+
+        if(resposta != null){
+
+        News.find({}).sort({'views': -1}).limit(3).exec(function(err,postsTop){
+
+            // console.log(posts[0]);
+
+             postsTop = postsTop.map(function(val){
+
+                     return {
+
+                         titulo: val.titulo,
+
+                         conteudo: val.conteudo,
+
+                         descricaoCurta: val.conteudo.substr(0,100),
+
+                         imagem: val.imagem,
+
+                         slug: val.slug,
+
+                         categoria: val.categoria,
+
+                         views: val.views
+
+                         
+
+                     }
+
+             })
+
+
+
+             
+
+
+
+             res.render('single',{noticias:resposta,postsTop:postsTop});
+
+            
+
+         })
+    }else{
+        res.redirect('/')
+    }
+    
     })
     //res.send(req.params.slug);
 })

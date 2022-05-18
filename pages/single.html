@@ -18,37 +18,16 @@
 
             <h3>Mais Lidas</h3>
             <div class="mais-lidas-noticias">
-                <div class="mais-lida-noticia-single">
-                    <img src="/public/images/natureza_small.png" />
-                    <div class="texto-mais-lida-single">
-                        <h4>Natureza</h4>
-                        <p>A importância da floresta do ártico para a biodiversidade mundial. Qual o impacto o degelo na fauna e flora?</p>
-                        <a href="/encarar-o-surf">Saiba mais</a>
-                    </div>
-                </div>
-                <div class="mais-lida-noticia-single">
-                    <img src="/public/images/natureza_small.png" />
-                    <div class="texto-mais-lida-single">
-                        <h4>Natureza</h4>
-                        <p>A importância da floresta do ártico para a biodiversidade mundial. Qual o impacto o degelo na fauna e flora?</p>
-                        <a href="/encarar-o-surf">Saiba mais</a>
-                    </div>
-                </div>
-                <div class="mais-lida-noticia-single">
-                    <img src="/public/images/natureza_small.png" />
-                    <div class="texto-mais-lida-single">
-                        <h4>Natureza</h4>
-                        <p>A importância da floresta do ártico para a biodiversidade mundial. Qual o impacto o degelo na fauna e flora?</p>
-                        <a href="/encarar-o-surf">Saiba mais</a>
-                    </div>
-                </div>
-                <div class="mais-lida-noticia-single">
-                    <img src="/public/images/natureza_small.png" />
-                    <div class="texto-mais-lida-single">
-                        <h4>Natureza</h4>
-                        <p>A importância da floresta do ártico para a biodiversidade mundial. Qual o impacto o degelo na fauna e flora?</p>
-                        <a href="/encarar-o-surf">Saiba mais</a>
-                    </div>
+                    <% for(let i = 0; i < postsTop.length; i++) { %> 
+                        <div class="mais-lida-noticia-single">
+                            <img src="<%= postsTop[i].imagem %>" />
+                            <div class="texto-mais-lida-single">
+                                <h4><%= postsTop[i].titulo %></h4>
+                                <p><%- postsTop[i].descricaoCurta %></p>
+                                <a href="<%= postsTop[i].slug %>">Saiba mais</a>
+                            </div>
+                        </div>
+                        <% } %> 
                 </div>
             </div>
         </div>
