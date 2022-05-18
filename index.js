@@ -83,8 +83,17 @@ app.get('/',(req,res)=>{
     }else{
 
         News.find({titulo: {$regex: req.query.busca,$options:"i"}},function(err,posts){
-            console.log(posts)
-            res.render('busca',{});
+            posts = posts.map(function(val){
+                return {
+                    titulo: val.titulo,
+                    conteudo: val.conteudo,
+                    descricaoCurta: val.conteudo.substr(0,100),
+                    imagem: val.imagem,
+                    categoria: val.categoria,
+                    slug: val.slug            
+                }
+            })
+            res.render('busca',{busca:req.query.busca,posts:posts,contagem:posts.length});
         
         })
 
