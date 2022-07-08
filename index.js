@@ -176,11 +176,76 @@ app.post('/admin/login',(req,res)=>{
     res.redirect('/admin/login');
 })
 
+app.post('/admin/cadastro',(req,res)=>{
+    News.create({
+
+        titulo:req.body.titulo_noticia,
+
+        imagem: req.body.url_imagem,
+
+        categoria: req.body.categoria,
+
+        conteudo: req.body.noticia,
+
+        slug: req.body.slug,
+
+        autor: req.body.autor,
+
+        views: 0
+
+    });
+
+    res.redirect('/admin/login');
+})
+
+app.get('/admin/apagar/:id',(req,res)=>{
+    News.deleteOne({_id:req.params.id}).then(function(){
+
+        res.redirect('/admin/login')
+
+    });
+})
+
+app.get('/admin/deslogar',(req,res)=>{
+    if(req.session.login != null){
+        req.session.login = null;
+        res.redirect('/admin/login')
+    }
+})
+
 app.get('/admin/login',(req,res)=>{
     if(req.session.login == null){
         res.render('admin-login');
     }else{
-        res.render('admin-painel',{name: req.session.login})
+        News.find({}).sort({'_id': -1}).exec(function(err,posts){
+
+            // console.log(posts[0]);
+
+                posts = posts.map(function(val){
+
+                     return {
+
+                         id: val._id,
+
+                         titulo: val.titulo,
+
+                         conteudo: val.conteudo,
+
+                         descricaoCurta: val.conteudo.substr(0,100),
+
+                         imagem: val.imagem,
+
+                         slug: val.slug,
+
+                         categoria: val.categoria
+
+                         
+
+                     }
+
+             })
+            res.render('admin-painel',{name: req.session.login,posts:posts})
+        })
     }
 })
 

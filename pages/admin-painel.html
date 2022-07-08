@@ -12,7 +12,7 @@
         <div class="admin-center">
             <div class="admin-logo">
                 <h3>Painel Administrativo</h3>
-                <h3>Seja bem-vindo(a) <%- name %> ✋</h3>
+                <h3 style="display: flex;">Seja bem-vindo(a) <%- name %> ✋ <p><a href="/admin/deslogar" class="admin-deslogar">deslogar</a></p></h3>
             </div><!--admin-logo-->
         </div><!--admin-center-->
     </header>
@@ -21,11 +21,25 @@
         <p>Use o formulário abaixo para cadastrar sua noticia</p>
 
         <form class="form-cadastro" method="post" action="/admin/cadastro">
-            <input type="text" name="titulo-noticia" placeholder="Tituto da noticia..."/>
-            <input type="text" name="url-imagem" placeholder="Imagem da noticia..."/>
-            <textarea name="info-noticia" id="textarea" cols="30" rows="10" placeholder="Informações da noticia..."></textarea>
+            <input type="text" name="titulo_noticia" placeholder="Tituto da noticia..."/>
+            <input type="text" name="url_imagem" placeholder="Imagem da noticia..."/>
+            <input type="text" name="slug" placeholder="Url da noticia..."/>
+            <input type="text" name="categoria" placeholder="categoria da noticia..."/>
+            <input type="text" name="autor" placeholder="Autor da noticia..."/>
+            <textarea name="noticia" id="textarea" cols="30" rows="10" placeholder="Informações da noticia..."></textarea>
             <input type="submit" value="Cadastrar Noticia">
         </form>
+    </div>
+    <div class="gerenciando-noticia">
+        <div class="noticia-center">
+            <h2>Gerencie as noticias</h2>
+
+                <% for(let i = 0; i < posts.length; i++) { %> 
+                    <div class="single-noticia">   
+                        <h3>Titulo da noticia: <%= posts[i].titulo %></h3><a href="/admin/apagar/<%= posts[i].id %>">Apagar Noticia</a>
+                    </div>
+                <% } %> 
+        </div>
     </div>
 </body>
 </html>
