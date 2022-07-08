@@ -1,4 +1,5 @@
 const express = require('express');
+const fileupload = require('express-fileupload');
 const mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 const News = require('./news')
