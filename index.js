@@ -2,7 +2,8 @@ const express = require('express');
 const fileupload = require('express-fileupload');
 const mongoose = require('mongoose');
 var bodyParser = require('body-parser');
-const News = require('./news')
+const News = require('./news');
+const fs = require('fs');
 
 const path = require('path');
 
@@ -24,6 +25,11 @@ app.use(bodyParser.urlencoded({
 
 
 app.use(session({ secret: 'keyboard cat', cookie: { maxAge: 60000 }}))
+
+app.use(fileupload({
+    useTempFiles : true,
+    tempFileDir : path.join(__dirname, 'temp')
+}));
 
 app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'html');
@@ -178,11 +184,24 @@ app.post('/admin/login',(req,res)=>{
 })
 
 app.post('/admin/cadastro',(req,res)=>{
+    console.log(req.files)
+    let formato = req.files.arquivo.name.split('.')
+    var imagem = "";
+    if(formato[formato.length - 1] == "jpg" || formato[formato.length - 1] == "png"){
+        imagem = new Date().getTime()+"."+formato[formato.length -1];
+        req.files.arquivo.mv(__dirname+"/public/images/"+imagem);    
+    }else{
+        fs.unlinkSync(req.files.arquivo.rempfilePath)
+    }
+
+
     News.create({
 
         titulo:req.body.titulo_noticia,
 
-        imagem: req.body.url_imagem,
+        //imagem: req.body.url_imagem,
+
+        imagem: 'http://localhost:5000/public/images/'+imagem,
 
         categoria: req.body.categoria,
 
