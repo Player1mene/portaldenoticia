@@ -7,6 +7,8 @@ const path = require('path');
 
 const app = express();
 
+var session = require('express-session')
+
 
 mongoose.connect('mongodb+srv://root:HWvN68UEBDXUNVwO@cluster0.rcedl.mongodb.net/wave?retryWrites=true&w=majority',{useNewUrlParser: true, useUnifiedTopology: true}).then(function(){
   console.log('conectado com sucesso!')  
@@ -18,6 +20,9 @@ app.use( bodyParser.json() );
 app.use(bodyParser.urlencoded({     
   extended: true
 })); 
+
+
+app.use(session({ secret: 'keyboard cat', cookie: { maxAge: 60000 }}))
 
 app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'html');
@@ -153,6 +158,30 @@ app.get('/:slug',(req,res)=>{
     
     })
     //res.send(req.params.slug);
+})
+
+var users = [
+    {
+        login: "Gabriel",
+        senha: "123",
+    }
+]
+
+app.post('/admin/login',(req,res)=>{
+    users.map((val)=>{
+        if(req.body.login == val.login && req.body.senha == val.senha){
+            req.session.login = val.login;
+        }
+    })
+    res.redirect('/admin/login');
+})
+
+app.get('/admin/login',(req,res)=>{
+    if(req.session.login == null){
+        res.render('admin-login');
+    }else{
+        res.render('admin-painel',{name: req.session.login})
+    }
 })
 
 

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/public/style-admin.css">
+    <title>Painel Administrativo</title>
+</head>
+<body>
+    <header>
+        <div class="admin-center">
+            <div class="admin-logo">
+                <h3>Painel Administrativo</h3>
+                <h3>Seja bem-vindo(a) <%- name %> ✋</h3>
+            </div><!--admin-logo-->
+        </div><!--admin-center-->
+    </header>
+    <div class="form-noticia">
+        <h2>Qual vai ser a boa hoje?</h2>
+        <p>Use o formulário abaixo para cadastrar sua noticia</p>
+
+        <form class="form-cadastro" method="post" action="/admin/cadastro">
+            <input type="text" name="titulo-noticia" placeholder="Tituto da noticia..."/>
+            <input type="text" name="url-imagem" placeholder="Imagem da noticia..."/>
+            <textarea name="info-noticia" id="textarea" cols="30" rows="10" placeholder="Informações da noticia..."></textarea>
+            <input type="submit" value="Cadastrar Noticia">
+        </form>
+    </div>
+</body>
+</html>
