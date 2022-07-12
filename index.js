@@ -1,5 +1,4 @@
 const express = require('express');
-const fileupload = require('express-fileupload');
 const mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 const News = require('./news');
@@ -24,12 +23,7 @@ app.use(bodyParser.urlencoded({
 })); 
 
 
-app.use(session({ secret: 'keyboard cat', cookie: { maxAge: 60000 }}))
-
-app.use(fileupload({
-    useTempFiles : true,
-    tempFileDir : path.join(__dirname, 'temp')
-}));
+app.use(session({ secret: 'keyboard cat', cookie: {}}));
 
 app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'html');
@@ -46,7 +40,7 @@ app.get('/',(req,res)=>{
                 return {
                     titulo: val.titulo,
                     conteudo: val.conteudo,
-                    descricaoCurta: val.conteudo.substr(0,100),
+                    descricaoCurta: val.conteudo.substr(0, 100),
                     imagem: val.imagem,
                     categoria: val.categoria,
                     slug: val.slug            
@@ -64,7 +58,7 @@ app.get('/',(req,res)=>{
 
                              conteudo: val.conteudo,
 
-                             descricaoCurta: val.conteudo.substr(0,100),
+                             descricaoCurta: val.conteudo.substr(0, 100),
 
                              imagem: val.imagem,
 
@@ -99,7 +93,7 @@ app.get('/',(req,res)=>{
                 return {
                     titulo: val.titulo,
                     conteudo: val.conteudo,
-                    descricaoCurta: val.conteudo.substr(0,100),
+                    descricaoCurta: val.conteudo.substr(0, 100),
                     imagem: val.imagem,
                     categoria: val.categoria,
                     slug: val.slug            
@@ -184,24 +178,11 @@ app.post('/admin/login',(req,res)=>{
 })
 
 app.post('/admin/cadastro',(req,res)=>{
-    console.log(req.files)
-    let formato = req.files.arquivo.name.split('.')
-    var imagem = "";
-    if(formato[formato.length - 1] == "jpg" || formato[formato.length - 1] == "png"){
-        imagem = new Date().getTime()+"."+formato[formato.length -1];
-        req.files.arquivo.mv(__dirname+"/public/images/"+imagem);    
-    }else{
-        fs.unlinkSync(req.files.arquivo.rempfilePath)
-    }
-
-
     News.create({
 
-        titulo:req.body.titulo_noticia,
+        titulo: req.body.titulo_noticia,
 
-        //imagem: req.body.url_imagem,
-
-        imagem: 'http://localhost:5000/public/images/'+imagem,
+        imagem: req.body.url_imagem,
 
         categoria: req.body.categoria,
 
@@ -211,7 +192,7 @@ app.post('/admin/cadastro',(req,res)=>{
 
         autor: req.body.autor,
 
-        views: 0
+        views: 0,
 
     });
 
@@ -229,7 +210,7 @@ app.get('/admin/apagar/:id',(req,res)=>{
 app.get('/admin/deslogar',(req,res)=>{
     if(req.session.login != null){
         req.session.login = null;
-        res.redirect('/admin/login')
+        res.redirect('/')
     }
 })
 
